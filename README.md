@@ -7,12 +7,12 @@ The final program works with both OpenCV and AI, where the defect gets measured 
 
 
 ### PYTHON FILES
-1. contour_measurement.py --> detecting the hand oreintation + measuring the contours using OPENCV
-2. detect.py --> using custom trained YOLOv5 weights, the probabilities of the sizes are detected. multiple holes can be detected.
-3. combined.py --> both 1 and 2 python files are combined to produce both results at the same time.
+1. contour_measurement.py : detecting the hand oreintation + measuring the contours using OPENCV
+2. detect.py : using custom trained YOLOv5 weights, the probabilities of the sizes are detected. multiple holes can be detected.
+3. combined.py : both 1 and 2 python files are combined to produce both results at the same time.
 
 ### NOTEBOOK FILE
-1. train_model.ipynb --> training the custom dataset to create a custom yolov5 weight for detection purposes.
+1. train_model.ipynb : training the custom dataset to create a custom yolov5 weight for detection purposes.
 
 ### Dataset used
 - custom dataset used
