@@ -1,0 +1,7 @@
+DATASET LINK: https://mega.nz/file/gssixCZL#Ez90U65llCwQPrEKS1YkKXETRmNrNoyxn2TvpZs8p3I
+
+
+----HOW TO USE----
+1. Download and unzip file
+2. In the Colab, run lines until you have cloned the YOLOv5 github
+3. Upload this dataset inside YOLOv5 folder in Colab so that the final path would be yolov5/glove_dataset
