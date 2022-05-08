@@ -1,5 +1,6 @@
 # YOLOv5 🚀 by Ultralytics, GPL-3.0 license
-# LIBRARIES
+
+# LIBRARIES - DETECT.PY
 import argparse
 import os
 import sys
@@ -9,8 +10,7 @@ import torchvision
 import torch.backends.cudnn as cudnn
 from pathlib import Path
 
-
-# IMPORTED LIBRARIES
+# IMPORTED LIBRARIES - YOLO DIRECTORY
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
 if str(ROOT) not in sys.path:
@@ -25,7 +25,7 @@ from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, time_sync
 
 
-# LIBRARIES
+# LIBRARIES - MEASUREMENT
 import cv2
 import pandas as pd
 import numpy as np
@@ -49,7 +49,7 @@ hands = mp_hands.Hands(
     min_tracking_confidence=0.75,
     max_num_hands=2)
 
-
+# INITIALISATION 
 @torch.no_grad()
 def run(
         weights=ROOT / 'E:/Study/Intake Jan 2022/MVI - Machine Mission and Intelligence/Assignment MVI/yolov5/content/yolov5/runs/train/yolov5s_results/weights/best.pt',  # model.pt path(s)
@@ -88,18 +88,18 @@ def run(
     if is_url and is_file:
         source = check_file(source)  # download
 
-    # Directories
+    # DIRECTORIES
     save_dir = increment_path(Path(project) / name, exist_ok=exist_ok)  # increment run
     (save_dir / 'labels' if save_txt else save_dir).mkdir(parents=True, exist_ok=True)  # make dir
 
-    # Load model
+    # LOAD MODEL
     device = select_device(device)
     model = DetectMultiBackend(weights, device=device, dnn=dnn, data=data, fp16=half)
     stride, names, pt = model.stride, model.names, model.pt
     imgsz = check_img_size(imgsz, s=stride)  # check image size
     myvideo = cv2.VideoCapture(0)
     ret, myframe = myvideo.read()
-    # Dataloader
+    # DATALOADER
     if webcam:
         view_img = check_imshow()
         cudnn.benchmark = True  # set True to speed up constant image size inference
@@ -110,9 +110,6 @@ def run(
         bs = 1  # batch_size
     vid_path, vid_writer = [None] * bs, [None] * bs
 
-
-
-
     livefeed_name = "GLOVE DEFECT DETECTION & MEASUREMENT"
     cv2.namedWindow(livefeed_name)
 
@@ -121,7 +118,7 @@ def run(
     cv2.createTrackbar("KERNAL", livefeed_name, 5, 27, tbar)
     cv2.createTrackbar("ITERATIONS", livefeed_name, 0, 10, tbar)
 
-    # Run inference
+    # RUN INFERENCE
     model.warmup(imgsz=(1 if pt else bs, 3, *imgsz))  # warmup
     dt, seen = [0.0, 0.0, 0.0], 0
     #ret, myframe = myvideo.read()
@@ -131,7 +128,7 @@ def run(
         im = im.half() if model.fp16 else im.float()  # uint8 to fp16/32
         im /= 255  # 0 - 255 to 0.0 - 1.0
         if len(im.shape) == 3:
-            im = im[None]  # expand for batch dim
+            im = im[None]  # EXPAND FOR BATCH DIMENTIONS
         t2 = time_sync()
         dt[0] += t2 - t1
 
@@ -146,7 +143,7 @@ def run(
         dt[2] += time_sync() - t3
 
 
-        # Process predictions
+        # PROCESS PREDICTIONS 
         for i, det in enumerate(pred):  # per image
 
             seen += 1
@@ -243,17 +240,17 @@ def run(
             feed_closing = cv2.cvtColor(feed_closing, cv2.COLOR_GRAY2RGB)
             cv2.drawContours(feed_closing, contours, -1, (128, 255, 0), 1)
 
-            # focus on only the largest outline by area
-            list_areas = []  # list to hold all areas
+            # FOCUS ON ONLY THE LARGEST OUTLINE BY AREA
+            list_areas = []  # HOLD ALL AREAS
 
             for contour in contours:
                 a = cv2.contourArea(contour)
                 list_areas.append(a)
 
             max_area = max(list_areas)
-            max_area_index = list_areas.index(max_area)  # index of the list element with largest area
+            max_area_index = list_areas.index(max_area)  # INDEX OF THE LARGEST AREA
 
-            c = contours[max_area_index - 1]  # largest area contour is usually the viewing window itself, why?
+            c = contours[max_area_index - 1]  
 
             cv2.drawContours(feed_closing, [c], 0, (0, 0, 255), 1)
 
